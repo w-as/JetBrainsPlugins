@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <JetBrainsProduct>Rider</JetBrainsProduct>
+    <Description>Rider Plugin</Description>
+    <AssemblyName>RiderPlugin</AssemblyName>
+    <AssemblyDescription>Provides standard Rider settings.</AssemblyDescription>
+    <PackageTags>Rider plugin</PackageTags>
+    <JetBrainsSdkVersion>2023.3.4</JetBrainsSdkVersion>
+
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <IncludeBuildOutput>true</IncludeBuildOutput>
+    <TargetFramework>net472</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <BuildOutputTargetFolder>DotFiles\Extensions\$(AssemblyName)</BuildOutputTargetFolder>
+    <WaveVersion>$(JetBrainsSdkVersion.Substring(2,2))$(JetBrainsSdkVersion.Substring(5,1)).0.0</WaveVersion>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+    <PackageOutputPath>bin\nuget</PackageOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="..\DotSettings\*.DotSettings" PackagePath="DotFiles\Extensions\$(AssemblyName)\settings\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Wave" Version="[$(WaveVersion),)" />
+    <PackageReference Include="JetBrains.Rider.SDK" Version="$(JetBrainsSdkVersion)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <!-- Build Rider Plugin Zip -->
+  <Target Name="PostPack" AfterTargets="Pack">
+    <Exec Condition="!Exists('$(PackageOutputPath)\META-INF')"
+          Command="mkdir $(PackageOutputPath)\META-INF" />
+    <Exec Command="xcopy META-INF\* $(PackageOutputPath)\META-INF /y"/>
+    <ZipDirectory
+        SourceDirectory="$(PackageOutputPath)"
+        DestinationFile="$(PackageOutputPath)\..\$(AssemblyName).zip" />
+  </Target>
+
+</Project>

@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <JetBrainsProduct>ReSharper</JetBrainsProduct>
+    <Description>ReSharper Plugin</Description>
+    <AssemblyName>ReSharperPlugin</AssemblyName>
+    <AssemblyDescription>Provides standard ReSharper settings.</AssemblyDescription>
+    <PackageTags>ReSharper plugin</PackageTags>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <IncludeBuildOutput>true</IncludeBuildOutput>
+    <TargetFramework>net472</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <BuildOutputTargetFolder>DotFiles\Extensions\$(AssemblyName)</BuildOutputTargetFolder>
+    <JetBrainsSdkVersion>2022.1.0</JetBrainsSdkVersion>
+    <WaveVersion>$(JetBrainsSdkVersion.Substring(2,2))$(JetBrainsSdkVersion.Substring(5,1)).0.0</WaveVersion>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="..\DotSettings\*.DotSettings" PackagePath="DotFiles\Extensions\$(AssemblyName)\settings\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Wave" Version="[$(WaveVersion),)" />
+    <PackageReference Include="JetBrains.ReSharper.SDK" Version="$(JetBrainsSdkVersion)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>
